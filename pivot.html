@@ -1,0 +1,66 @@
+<body bgcolor=000000>
+<div id="demo">
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+  <!--<script src="./OrbitControls.js"></script>-->
+  <script src="./lib/three/examples/jsm/math/ImprovedNoise.js"></script>
+  <script src="./lib/three/examples/jsm/libs/stats.module.js"></script>
+  <script src="./lib/three/examples/jsm/libs/lil-gui.module.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+
+
+
+<script type="module">
+  // Simple three.js example
+
+ // import * as THREE from 'three';
+ // import { OrbitControls } from 'https://unpkg.com/three/examples/jsm/controls/OrbitControls.js';
+let controls, renderer, scene, camera
+
+(function () {
+let degree = 0
+// scene
+scene = new THREE.Scene();
+scene.add(new THREE.GridHelper(6, 6));
+
+// mesh
+var mesh = new THREE.Mesh(
+new THREE.ConeGeometry(0.5, 1, 30, 30),
+new THREE.MeshNormalMaterial());
+
+//mesh.geometry.rotateX(Math.PI * 0.5);
+mesh.position.set(1, 0, 0);
+//mesh.lookAt(0, 0, 0);
+scene.add(mesh);
+
+var v = new THREE.Vector3(0, 0, 1);
+
+
+console.log(mesh.position.clone().round()); // {x: -1, y: 0, z: -1}
+
+// camera, render
+camera = new THREE.PerspectiveCamera(50, 4 / 3, .5, 1000);
+camera.position.set(0, 10, 5);
+camera.lookAt(0, 0, 0);
+renderer = new THREE.WebGLRenderer();
+renderer.setSize(640, 480);
+document.getElementById('demo').appendChild(renderer.domElement);
+renderer.render(scene, camera);
+controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+
+
+animate()
+function animate(dt) {
+
+  requestAnimationFrame(animate);
+  degree = .91
+  mesh.position.applyAxisAngle(v, Math.PI / 180 * degree);
+  // required if controls.enableDamping or controls.autoRotate are set to true
+  controls.update();
+
+  renderer.render(scene, camera);
+
+}
+}
+())
+</script>
